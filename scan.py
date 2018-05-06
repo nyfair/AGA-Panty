@@ -44,7 +44,7 @@ for f in files:
         print('%s %s %s' % (fname, key, types[x[0]]))
         if x[0] == b'1':
           res[key] = fname[:32]
-          shutil.copy(f, 'backup/%s' % fname)
+          shutil.copy2(f, 'backup/%s' % fname)
         with open('tmp/%s' % fname, 'wb') as w:
           w.write(raw[32:])
 with open('res.json', 'w') as fd:
