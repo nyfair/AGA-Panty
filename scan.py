@@ -50,7 +50,7 @@ for f in files:
 with open('res.json', 'w') as fd:
   fd.write(json.dumps(res))
 
-print('Use Unity Studio to open all unity3d files and export all assets under the "tmp" directory with "cha" filter')
+print('Use Unity Studio to open all unity3d files and export all assets under the "tmp" directory with "chr" filter')
 x = os.system('"Unity Studio/UnityStudio.exe"')
 if x == 0:
   files = glob.glob('tmp/**/*.png', recursive=True)
