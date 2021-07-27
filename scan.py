@@ -22,11 +22,17 @@ if os.path.exists('res.json'):
     res = json.loads(fd.read())
     ctime = res['time']
 
-files = glob.glob('%s/*.unity3d' % sys.argv[1])
+files = glob.glob('jp.colopl.alice/files/*.unity3d')
 for f in files:
+  fname = os.path.basename(f)
+  f1 = 'backup/%s' % fname
+  f2 = 'mod/%s' % fname
+  s1 = os.path.getsize(f1) if os.path.exists(f1) else 0
+  s2 = os.path.getsize(f2) if os.path.exists(f2) else 0
+  if os.path.getsize(f) in [s1, s2]:
+    continue
   mtime = os.path.getmtime(f)
   if mtime > ctime:
-    fname = os.path.basename(f)
     if mtime > res['time']:
       res['time'] = mtime
     with open(f, 'rb') as fd:
@@ -38,17 +44,13 @@ for f in files:
         print('%s %s %s' % (fname, key, types[x[0]]))
         if x[0] == b'1':
           res[key] = fname[:32]
-          shutil.copy(f, 'backup/%s' % fname)
-        else:
-          with open('tmp/%s' % fname, 'wb') as w:
-            w.write(raw[32:])
+          shutil.copy2(f, 'backup/%s' % fname)
+        with open('tmp/%s' % fname, 'wb') as w:
+          w.write(raw[32:])
 with open('res.json', 'w') as fd:
   fd.write(json.dumps(res))
 
-print('Use Unity Studio to open all unity3d files and export all assets under the "tmp" directory')
-x = os.system('"Unity Studio\\UnityStudio.exe"')
-if x == 0:
-  files = glob.glob('tmp/**/*.png', recursive=True)
-  for f in files:
-    shutil.move(f, 'img/%s' % os.path.basename(f))
-  shutil.rmtree('tmp')
+files = glob.glob('tmp/**/*.png', recursive=True)
+for f in files:
+  shutil.move(f, 'img/%s' % os.path.basename(f))
+shutil.rmtree('tmp')
