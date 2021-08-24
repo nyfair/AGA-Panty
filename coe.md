@@ -3,7 +3,7 @@
 83 e9 04         sub ecx, 4
 83 e1 7f         and ecx, 7Fh
 3b c8            cmp ecx, eax
-0f 84 ?? ??      jz ????               <- 随机事件暗桩，改成jmp补一位00(例0f84 dd03->e9 de03[偏移量+1] 00)
+0f 84 [?? ??]    jz ????               <- 随机事件暗桩，改成jmp补一位00(例0f84 dd03->e9 de03[偏移量+1] 00)
                  lea rcx, aAgtFluff  ; "AGT fluff\n"
                  call xxxx
 ```
@@ -15,21 +15,21 @@
                  call xxxx
 ```
 ```
-83 [3D D6 27 1B 06 00]    cmp cs:dword_????, 0
+83 [3d d6 27 1b 06 00]    cmp cs:dword_????, 0
 75 [34]                   jnz short ?? <- CD key校验，改成jmp(75->eb)
 b9 05                     mov ecx, 5
-......
+若干行之后
                           lea rcx, aYourCdKeyIsInv ; "Your CD key is invalid"
 ```
 ```
                     lea rcx, aMain           ; "main"
 e8 [d7 62 fc ff]    call sub_??
-[48 8D 4C 24 58]    lea rcx, [rsp+XX+YY]
+[48 8d 4c 24 58]    lea rcx, [rsp+XX+YY]
 e8 [9d 71 04 00]    call sub_?? <- 启动自检，改成mov eax,1之后补00(b8 01 00 00 00)
 85 c0               test eax, eax
 ```
 ```
 41 3b fc            cmp edi, r12d
-75 [04]             jnz short ?? <- CD key内联函数暗桩，改成jmp(75-eb)
+75 [04]             jnz short ?? <- 黑key检测，改成jmp(75-eb)
 8b c5               mov eax, ebp
 ```
