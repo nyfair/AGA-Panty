@@ -15,7 +15,7 @@
                  call xxxx
 ```
 ```
-83 [3d d6 27 1b 06 00]    cmp cs:dword_????, 0
+83 3d [d6 27 1b 06] 00    cmp cs:dword_????, 0
 75 [34]                   jnz short ?? <- CD key校验，改成jmp(75->eb)
 b9 05                     mov ecx, 5
 若干行之后
@@ -24,12 +24,18 @@ b9 05                     mov ecx, 5
 ```
                     lea rcx, aMain           ; "main"
 e8 [d7 62 fc ff]    call sub_??
-[48 8d 4c 24 58]    lea rcx, [rsp+XX+YY]
+48 8d 4c 24 58      lea rcx, [rsp+XX+YY]
 e8 [9d 71 04 00]    call sub_?? <- 启动自检，改成mov eax,1之后补00(b8 01 00 00 00)
 85 c0               test eax, eax
 ```
 ```
 41 3b fc            cmp edi, r12d
-75 [04]             jnz short ?? <- 黑key检测，改成jmp(75-eb)
+75 [04]             jnz short ?? <- 黑key检测，改成jmp(75->eb)
 8b c5               mov eax, ebp
+```
+```
+0f bf d0      movsx edx, ax
+83 fa 01      cmp edx, 1
+74 18         jz short ?? <- 联机key检测，改成jmp(74->eb)
+              lea rcx, aKeyAuthenticat ; "Key authentication failed (%d). Make sure no one else is using the same serial key."
 ```
