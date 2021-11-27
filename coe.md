@@ -28,8 +28,22 @@ e8 [9d 71 04 00]    call sub_??                 <- 启动自检，改成mov eax,
 85 c0               test eax, eax
 ```
 ```
+48 63 df                  movsxd rbx, edi
+44 39 BC 99 [a0 6a f3 07] cmp rva dword_????[rcx+rbx*4], r15d
+0f 85 [84 00 00 00]       jnz loc_??                <- 联机撞key，改成nop; jmp loc_??(0f 85->90 e9)
+                          mov r8d, r15d
+                          lea rcx, aConDHasSameSer  "con %d has same serial %d"
+```
+```
 0f bf c8      movsx ecx, ax
 85 c9         test ecx, ecx
 7f [24]       jg short ??                       <- 联机key检测，改成jmp(7f->eb)
               lea rcx, aKeyAuthenticat;         "Key authentication failed (%d). Make sure no one else is using the same serial key."
+```
+```
+8b 0d [1d 31 dc 07] mov ecx, cs:dword_????
+e8 [64 4e e9 ff]    call xxxx
+85 c0               test eax, eax
+74 60               jz short loc_????          <- 陆地绘制暗桩，改成jmp(74->eb)
+                    lea rcx, aIslandRemoved ; "island removed .....\n"
 ```
