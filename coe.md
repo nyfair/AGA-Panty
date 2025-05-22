@@ -47,3 +47,10 @@ e8 [64 4e e9 ff]    call xxxx
 74 60               jz short loc_????          <- 陆地绘制暗桩，改成jmp(74->eb)
                     lea rcx, aIslandRemoved ; "island removed .....\n"
 ```
+
+# 3隐藏职业
+'''
+CB 00 00 00 01 00 00 00 CC 00 00 00
+to
+CB 00 00 00 00 00 00 00 CC 00 00 00
+'''
